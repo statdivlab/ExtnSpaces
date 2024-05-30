@@ -183,15 +183,30 @@ public class AlgorithmExecutor{
                 
                 while (myReader.hasNextLine()) {
                     CountTreePairs++;
+                    String PairName = "Pair"+CountTreePairs;
                     String Tree1String = myReader.nextLine();
                     if (myReader.hasNextLine()){
-                        String Tree2String = myReader.nextLine();
-                        PhyloTree FirstTree = new PhyloTree(Tree1String, false);
-                        PhyloTree SecondTree = new PhyloTree(Tree2String, false);
-                        ExtensionDistance(FirstTree, SecondTree, dirName+"/"+OutputDocName+"Pair"+CountTreePairs, nThreads);
-                        if (myReader.hasNextLine()){
-                            String EmptyLine = myReader.nextLine();
+                        try{
+                            PhyloTree FirstTree = new PhyloTree(Tree1String, false);
+                            
+                        } catch(Exception e){
+                            if (!Tree1String.trim().isEmpty()){
+                                PairName = new String(Tree1String.trim());
+                            }
+                            Tree1String = myReader.nextLine();
                         }
+                        if (myReader.hasNextLine()){
+                            String Tree2String = myReader.nextLine();
+                            PhyloTree FirstTree = new PhyloTree(Tree1String, false);
+                            PhyloTree SecondTree = new PhyloTree(Tree2String, false);
+                            ExtensionDistance(FirstTree, SecondTree, dirName+"/"+OutputDocName+PairName, nThreads);
+                            if (myReader.hasNextLine()){
+                                String EmptyLine = myReader.nextLine();
+                            }
+                        } else {
+                            System.out.println("Warning: The last tree does not have a second tree for comparison. It was ignored.");
+                        }
+                        
                     } else {
                         System.out.println("Warning: The last tree does not have a second tree for comparison. It was ignored.");
                     }
