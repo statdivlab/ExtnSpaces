@@ -1,0 +1,15 @@
+The first tree is: 
+  Leaves: [{A} 1, {B} 2, {C} 1, {D} 2, {E} 2, {F} 1, {G} 3];
+  Edges: [{B,C|A,D,E,F,G} 2, {A,B,C|D,E,F,G} 1, {D,F|A,B,C,E,G} 2, {A,B,C,D,F|E,G} 2];
+The second tree is: 
+  Leaves: [{A} 2, {B} 1, {C} 1, {D} 2, {F} 2, {G} 1];
+  Edges: [{C,D|A,B,F,G} 3, {B,F|A,C,D,G} 3, {B,C,D,F|A,G} 3];
+The complete leaf set is: [A, B, C, D, E, F, G]
+ 
+
+ The Running Time is 15 mili-seconds 
+Which is 0:00:00:00:015 
+Number of orthant pairs is 9
+The mean number of iterations is 1.7777777777777777
+The best orthant pair is (0, 6) 
+The distance found is 8.660254037844387

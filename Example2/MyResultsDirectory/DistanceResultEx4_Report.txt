@@ -1,0 +1,15 @@
+The first tree is: 
+  Leaves: [{A1} 1, {A2} 1, {A3} 1, {A4} 5, {A5} 1, {A6} 2, {A7} 1, {A8} 1, {A9} 1];
+  Edges: [{A1,A2|A3,A4,A5,A6,A7,A8,A9} 3, {A1,A2,A3|A4,A5,A6,A7,A8,A9} 2, {A1,A2,A3,A4|A5,A6,A7,A8,A9} 4, {A6,A7|A1,A2,A3,A4,A5,A8,A9} 2, {A6,A7,A8|A1,A2,A3,A4,A5,A9} 1, {A1,A2,A3,A4,A6,A7,A8|A5,A9} 2];
+The second tree is: 
+  Leaves: [{A0} 1, {A1} 1, {A2} 1, {A3} 3, {A5} 1, {A6} 1, {A7} 3, {A9} 3];
+  Edges: [{A1,A5|A0,A2,A3,A6,A7,A9} 2, {A2,A3|A0,A1,A5,A6,A7,A9} 2, {A1,A2,A3,A5|A0,A6,A7,A9} 1, {A6,A7|A0,A1,A2,A3,A5,A9} 4, {A1,A2,A3,A5,A6,A7|A0,A9} 2];
+The complete leaf set is: [A0, A1, A2, A3, A4, A5, A6, A7, A8, A9]
+ 
+
+ The Running Time is 2086 mili-seconds 
+Which is 0:00:00:02:086 
+Number of orthant pairs is 2925
+The mean number of iterations is 3.697094017094017
+The best orthant pair is (5, 7) 
+The distance found is 9.044990806907624

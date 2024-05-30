@@ -1,0 +1,15 @@
+The first tree is: 
+  Leaves: [{A} 6, {B} 5, {C} 3, {D} 3.6];
+  Edges: [{A,B|C,D} 1];
+The second tree is: 
+  Leaves: [{A} 4, {B} 2, {C} 5, {D} 4, {E} 5, {F} 4];
+  Edges: [{D,E|A,B,C,F} 7, {C,D,E|A,B,F} 4, {B,C,D,E|A,F} 5];
+The complete leaf set is: [A, B, C, D, E, F]
+ 
+
+ The Running Time is 35 mili-seconds 
+Which is 0:00:00:00:035 
+Number of orthant pairs is 35
+The mean number of iterations is 3.0571428571428574
+The best orthant pair is (27, 0) 
+The distance found is 7.340299721401027
