@@ -43,7 +43,7 @@ public class AlgorithmExecutor{
         return escapedData;
     }
     
-    public static void ExtensionDistance(PhyloTree FirstTree, PhyloTree SecondTree, String fileName, int Tnum){
+    public static void ExtensionDistance(PhyloTree FirstTree, PhyloTree SecondTree, String fileName, int Tnum, boolean TableProd, int nLinesTable){
         
         PhyloNicePrinter nicePrint = new PhyloNicePrinter();
         
@@ -51,9 +51,13 @@ public class AlgorithmExecutor{
         
         try {
             File outReport = new File(fileName+"_Report.txt");
-            File outTable = new File(fileName+"_Table.csv");
             outReport.createNewFile();
-            outTable.createNewFile();
+            
+            if(TableProd){
+                File outTable = new File(fileName+"_Table.csv");
+                outTable.createNewFile();
+            }
+            
         } catch (IOException e) {
             System.out.println("An error occurred opening the output documents.");
             e.printStackTrace();
@@ -86,44 +90,106 @@ public class AlgorithmExecutor{
         long TimeMilliSeconds = (End - Start);
         
         try {
-            FileWriter myWriter = new FileWriter(fileName+"_Report.txt");
-            PrintWriter WriterTable = new PrintWriter(new FileWriter(fileName+"_Table.csv"));
-            
-            String header = "Orthant 1, Orthant 2, Distance, Iterations, Tree 1, Tree 2, Message"; 
-            WriterTable.println(header); 
-            
-            //Computing some extra information
-            int OrthPairsNum = ESdistance.getOOED().size();
-            double MeanIts = 0;
-            String ListWarnings = "";
-            for (int j = 0; j < ESdistance.getOOED().size(); j++){
-                OrthExtDistance OED = ESdistance.getOOED().get(j);
-                MeanIts = MeanIts*((double)j/(j+1)) + (double)OED.getIterCount()/(j+1);
-                if (OED.getWarning() != null){
-                    ListWarnings = ListWarnings + "For orthant pair (" + OED.getO1ID() + ", " + OED.getO2ID() + ") " + OED.getWarning() + "\n";
+            if (TableProd){
+                FileWriter myWriter = new FileWriter(fileName+"_Report.txt");
+                PrintWriter WriterTable = new PrintWriter(new FileWriter(fileName+"_Table.csv"));
+
+                String header = "Orthant 1, Orthant 2, Distance, Iterations, Tree 1, Tree 2, Message"; 
+                WriterTable.println(header); 
+
+                //Computing some extra information
+                int OrthPairsNum = ESdistance.getOOED().size();
+                int nLT = 0;
+                if (nLinesTable == 0){
+                    nLT = OrthPairsNum;
+                } else {
+                    nLT = Math.min(nLinesTable, OrthPairsNum);
                 }
-                String Line = OED.getO1ID() + "," + OED.getO2ID() + "," + OED.getDistance() + "," + OED.getIterCount() + "," + escapeSpecialCharacters(OED.getFirstTree().getNewick(true)) +","+ escapeSpecialCharacters(OED.getSecondTree().getNewick(true)) +"," + OED.getWarning();
-                WriterTable.println(Line);
+                double MeanIts = 0;
+                int NumberOptimals = 1;
+                while(ESdistance.getDistance() == ESdistance.getOOED().get(NumberOptimals).getDistance()){
+                    NumberOptimals++;
+                }
+                String ListWarnings = "";
+                for (int j = 0; j < ESdistance.getOOED().size(); j++){
+                    OrthExtDistance OED = ESdistance.getOOED().get(j);
+                    MeanIts = MeanIts*((double)j/(j+1)) + (double)OED.getIterCount()/(j+1);
+                    if (OED.getWarning() != null){
+                        ListWarnings = ListWarnings + "For orthant pair (" + OED.getO1ID() + ", " + OED.getO2ID() + ") " + OED.getWarning() + "\n";
+                    }
+                    if (j < nLT){
+                        String Line = OED.getO1ID() + "," + OED.getO2ID() + "," + OED.getDistance() + "," + OED.getIterCount() + "," + escapeSpecialCharacters(OED.getFirstTree().getNewick(true)) +","+ escapeSpecialCharacters(OED.getSecondTree().getNewick(true)) +"," + OED.getWarning();
+
+                        WriterTable.println(Line);
+                    }
+                }
+
+                myWriter.write("The first original tree is: \n"+ nicePrint.toString(FirstTree)+"\n");
+                myWriter.write("The second original tree is: \n"+ nicePrint.toString(SecondTree)+"\n");
+                myWriter.write("The complete leaf set is: "+ completeLeafSet + "\n \n");
+
+                myWriter.write("\n The Running Time is " + TimeMilliSeconds + " mili-seconds, which is: "+ formatDuration(TimeMilliSeconds) +" \n");
+                myWriter.write("The number of orthant pairs is " + OrthPairsNum + "\n");
+                myWriter.write("The mean number of iterations is " + MeanIts + "\n");
+                myWriter.write("The distance found is " + ESdistance.getDistance() + "\n");
+                myWriter.write("A total of " + NumberOptimals + " tree pairs achieved this distance. \n This are: \n \n");
+                for (int j = 0; j < NumberOptimals; j++){
+                    myWriter.write("For orthant pair (" + ESdistance.getOOED().get(j).getO1ID() + ", " + ESdistance.getOOED().get(j).getO2ID() + ") the trees are \n");
+                    myWriter.write("T'_1:"+nicePrint.toString(ESdistance.getOOED().get(j).getFirstTree())+"\n");
+                    myWriter.write("T'_2:"+nicePrint.toString(ESdistance.getOOED().get(j).getSecondTree())+"\n \n");
+                }
+
+                myWriter.write("\n \n WARNINGS PRODUCED BY CODE: \n");
+                myWriter.write(ListWarnings);
+
+                myWriter.close();
+                WriterTable.close();
+            } else {
+                FileWriter myWriter = new FileWriter(fileName+"_Report.txt");
+
+                //Computing some extra information
+                int OrthPairsNum = ESdistance.getOOED().size();
+                double MeanIts = 0;
+                int NumberOptimals = 1;
+                while(ESdistance.getDistance() == ESdistance.getOOED().get(NumberOptimals).getDistance()){
+                    NumberOptimals++;
+                }
+                String ListWarnings = "";
+                for (int j = 0; j < ESdistance.getOOED().size(); j++){
+                    OrthExtDistance OED = ESdistance.getOOED().get(j);
+                    MeanIts = MeanIts*((double)j/(j+1)) + (double)OED.getIterCount()/(j+1);
+                    if (OED.getWarning() != null){
+                        ListWarnings = ListWarnings + "For orthant pair (" + OED.getO1ID() + ", " + OED.getO2ID() + ") " + OED.getWarning() + "\n";
+                    }
+                    
+                }
+
+                myWriter.write("The first original tree is: \n"+ nicePrint.toString(FirstTree)+"\n");
+                myWriter.write("The second original tree is: \n"+ nicePrint.toString(SecondTree)+"\n");
+                myWriter.write("The complete leaf set is: "+ completeLeafSet + "\n \n");
+
+                myWriter.write("\n The Running Time is " + TimeMilliSeconds + " mili-seconds, which is: "+ formatDuration(TimeMilliSeconds) +" \n");
+                myWriter.write("The number of orthant pairs is " + OrthPairsNum + "\n");
+                myWriter.write("The mean number of iterations is " + MeanIts + "\n");
+                myWriter.write("The distance found is " + ESdistance.getDistance() + "\n");
+                myWriter.write("A total of " + NumberOptimals + " tree pairs achieved this distance. \n This are: \n \n");
+                for (int j = 0; j < NumberOptimals; j++){
+                    myWriter.write("\n ---------- \n");
+                    myWriter.write("For orthant pair (" + ESdistance.getOOED().get(j).getO1ID() + ", " + ESdistance.getOOED().get(j).getO2ID() + ") the trees are \n");
+                    myWriter.write("T'_1:"+nicePrint.toString(ESdistance.getOOED().get(j).getFirstTree())+"\n");
+                    myWriter.write("T'_2:"+nicePrint.toString(ESdistance.getOOED().get(j).getSecondTree())+"\n \n ");
+                   
+                }
+                
+                myWriter.write("\n ---------- \n");
+                myWriter.write("\n \n WARNINGS PRODUCED BY CODE: \n");
+                myWriter.write(ListWarnings);
+
+                myWriter.close();
             }
-             
-            myWriter.write("The first tree is: \n"+ nicePrint.toString(FirstTree)+"\n");
-            myWriter.write("The second tree is: \n"+ nicePrint.toString(SecondTree)+"\n");
-            myWriter.write("The complete leaf set is: "+ completeLeafSet + "\n \n");
-             
-            myWriter.write("\n The Running Time is " + TimeMilliSeconds + " mili-seconds \n");
-            myWriter.write("Which is " + formatDuration(TimeMilliSeconds) + " \n");
-            myWriter.write("Number of orthant pairs is " + OrthPairsNum + "\n");
-            myWriter.write("The mean number of iterations is " + MeanIts + "\n");
-            myWriter.write("The best orthant pair is (" + ESdistance.getOOED().get(0).getO1ID() + ", " + ESdistance.getOOED().get(0).getO2ID() + ") \n");
-            myWriter.write("The distance found is " + ESdistance.getDistance() + "\n");
-             
-            myWriter.write(ListWarnings);
-             
-            myWriter.close();
-            WriterTable.close();
             System.out.println("Successfully wrote the report.");
         } catch (IOException e) {
-            System.out.println("An error occurred writing on the document.");
+            System.out.println("An error occurred writing on the documents.");
             e.printStackTrace();
         }
         
@@ -132,48 +198,51 @@ public class AlgorithmExecutor{
     public static void main(String[] args) {
         try {
             String InputDocName = args[0];
-            String OutputDocName = "ExtensionDistance";
             try{
                 File InputFile = new File(InputDocName);
                 Scanner myReader = new Scanner(InputFile);
                 int nThreads = 0;
                 String dirName = "ExtDistResults";
+                String OutputDocName = "ExtensionDistance";
                 int CountTreePairs = 0;
                 
-                if (args.length > 1){
-                    if ((args.length == 2) && (args[1].matches("-?\\d+"))){
-                        nThreads = Integer.parseInt(args[1]);
-                    } else {
-                        OutputDocName = args[1];
+                boolean ProduceTable = false;
+                int NumberLinesTable = 0;
+                
+                for (int j = 1; j < args.length; j++){
+                    if ("-d".equals(args[j])){
+                        if (args.length > j+1){
+                            dirName = args[j+1];
+                        }
+                    }
+                    if ("-o".equals(args[j])){
+                        if (args.length > j+1){
+                            OutputDocName = args[j+1];
+                        }
+                    }
+                    if ("-k".equals(args[j])){
+                        if (args.length > j+1){
+                            if (args[j+1].matches("\\d+")){
+                                nThreads = Integer.parseInt(args[j+1]);
+                            } else {
+                                System.out.println("Warning: Invalid number of Threads. Fixed at 1 instead.");
+                            }
+                        }
+                    }
+                    if ("-T".equals(args[j])){
+                        ProduceTable = true;
+                    }
+                    
+                    if ("-l".equals(args[j])){
+                        if (args.length > j+1){
+                            if (args[j+1].matches("\\d+")){
+                                NumberLinesTable = Integer.parseInt(args[j+1]);
+                            } else {
+                                System.out.println("Warning: Invalid number of rows for table. The report table will contain all orthant pairs instead.");
+                            }
+                        }
                     }
                 }
-                if (args.length == 3){
-                     if (args[2].matches("-?\\d+")){
-                         nThreads = Integer.parseInt(args[2]);
-                     } else {
-                         dirName = args[2];
-                     }
-                } else if (args.length > 3){
-                    if (args[2].matches("-?\\d+")){
-                         nThreads = Integer.parseInt(args[2]);
-                         dirName = args[3];
-                     } else {
-                         dirName = args[2];
-                         if(!args[3].matches("-?\\d+")){
-                             System.out.println("Warning: Invalid number of Threads. Fixed at 1 instead.");
-                             nThreads = 0;
-                         } else {
-                             nThreads = Integer.parseInt(args[3]);
-                         }
-                         
-                     }
-                }
-                
-                if (nThreads < 0){
-                    System.out.println("Warning: Invalid number of Threads. Fixed at 1 instead.");
-                    nThreads = 0;
-                }
-                
                 
                 File theDir = new File(dirName);
                 if (!theDir.exists()){
@@ -199,7 +268,7 @@ public class AlgorithmExecutor{
                             String Tree2String = myReader.nextLine();
                             PhyloTree FirstTree = new PhyloTree(Tree1String, false);
                             PhyloTree SecondTree = new PhyloTree(Tree2String, false);
-                            ExtensionDistance(FirstTree, SecondTree, dirName+"/"+OutputDocName+PairName, nThreads);
+                            ExtensionDistance(FirstTree, SecondTree, dirName+"/"+OutputDocName+ "_" +PairName, nThreads, ProduceTable, NumberLinesTable);
                             if (myReader.hasNextLine()){
                                 String EmptyLine = myReader.nextLine();
                             }
