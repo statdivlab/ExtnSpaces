@@ -99,14 +99,14 @@ public class AlgorithmExecutor{
 
                 //Computing some extra information
                 int OrthPairsNum = ESdistance.getOOED().size();
+                double MeanIts = 0;
+                int NumberOptimals = 1;
                 int nLT = 0;
                 if (nLinesTable == 0){
                     nLT = OrthPairsNum;
                 } else {
                     nLT = Math.min(nLinesTable, OrthPairsNum);
                 }
-                double MeanIts = 0;
-                int NumberOptimals = 1;
                 while(ESdistance.getDistance() == ESdistance.getOOED().get(NumberOptimals).getDistance()){
                     NumberOptimals++;
                 }
@@ -134,11 +134,15 @@ public class AlgorithmExecutor{
                 myWriter.write("The distance found is " + ESdistance.getDistance() + "\n");
                 myWriter.write("A total of " + NumberOptimals + " tree pairs achieved this distance. \n This are: \n \n");
                 for (int j = 0; j < NumberOptimals; j++){
+                    myWriter.write("\n ---------- \n");
                     myWriter.write("For orthant pair (" + ESdistance.getOOED().get(j).getO1ID() + ", " + ESdistance.getOOED().get(j).getO2ID() + ") the trees are \n");
-                    myWriter.write("T'_1:"+nicePrint.toString(ESdistance.getOOED().get(j).getFirstTree())+"\n");
-                    myWriter.write("T'_2:"+nicePrint.toString(ESdistance.getOOED().get(j).getSecondTree())+"\n \n");
+                    
+                    myWriter.write("\n T'_1:"+nicePrint.toString(ESdistance.getOOED().get(j).getFirstTree())+"\n");
+                    
+                    myWriter.write("\n T'_2:"+nicePrint.toString(ESdistance.getOOED().get(j).getSecondTree())+"\n \n");
                 }
-
+                
+                myWriter.write("\n ---------- \n");
                 myWriter.write("\n \n WARNINGS PRODUCED BY CODE: \n");
                 myWriter.write(ListWarnings);
 
@@ -161,7 +165,6 @@ public class AlgorithmExecutor{
                     if (OED.getWarning() != null){
                         ListWarnings = ListWarnings + "For orthant pair (" + OED.getO1ID() + ", " + OED.getO2ID() + ") " + OED.getWarning() + "\n";
                     }
-                    
                 }
 
                 myWriter.write("The first original tree is: \n"+ nicePrint.toString(FirstTree)+"\n");
@@ -176,8 +179,10 @@ public class AlgorithmExecutor{
                 for (int j = 0; j < NumberOptimals; j++){
                     myWriter.write("\n ---------- \n");
                     myWriter.write("For orthant pair (" + ESdistance.getOOED().get(j).getO1ID() + ", " + ESdistance.getOOED().get(j).getO2ID() + ") the trees are \n");
-                    myWriter.write("T'_1:"+nicePrint.toString(ESdistance.getOOED().get(j).getFirstTree())+"\n");
-                    myWriter.write("T'_2:"+nicePrint.toString(ESdistance.getOOED().get(j).getSecondTree())+"\n \n ");
+                    
+                    myWriter.write("\n T'_1:"+nicePrint.toString(ESdistance.getOOED().get(j).getFirstTree())+"\n");
+                    
+                    myWriter.write("\n T'_2:"+nicePrint.toString(ESdistance.getOOED().get(j).getSecondTree())+"\n \n ");
                    
                 }
                 
