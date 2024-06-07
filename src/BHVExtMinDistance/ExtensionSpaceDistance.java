@@ -33,7 +33,7 @@ public class ExtensionSpaceDistance{
     //private Geodesic bestGeode;
     
     //Constructor
-    public ExtensionSpaceDistance(ExtensionSpace ES1, ExtensionSpace ES2){
+    public ExtensionSpaceDistance(ExtensionSpace ES1, ExtensionSpace ES2, double Tol1, double Tol2){
         orderedOrthExtDistances = new ArrayList<OrthExtDistance>();
         
         Vector<OrthExt> OEs1 = ES1.getOrthExts();
@@ -49,7 +49,7 @@ public class ExtensionSpaceDistance{
                 //System.out.println("************");
                 //System.out.println("STARTING O pair ("+k1+", "+k2+")");
                 OrthExt OE2 = OEs2.get(k2);
-                OrthExtDistance tempOED = new OrthExtDistance(OE1, OE2);
+                OrthExtDistance tempOED = new OrthExtDistance(OE1, OE2, Tol1, Tol2);
                 //System.out.println("THE DISTANCE WAS "+ tempOED.getDistance());
                 //System.out.println("************");
                 //System.out.println("");
@@ -86,7 +86,7 @@ public class ExtensionSpaceDistance{
     }//end of constructor 
     
     //Constructor 2: allowing for unrestricted version
-    public ExtensionSpaceDistance(ExtensionSpace ES1, ExtensionSpace ES2, boolean restricted){
+    public ExtensionSpaceDistance(ExtensionSpace ES1, ExtensionSpace ES2, boolean restricted, double Tol1, double Tol2){
         orderedOrthExtDistances = new ArrayList<OrthExtDistance>();
         
         Vector<OrthExt> OEs1 = ES1.getOrthExts();
@@ -104,7 +104,7 @@ public class ExtensionSpaceDistance{
                 //System.out.println("STARTING O pair ("+k1+", "+k2+")");
                 //OE1.printLN();
                 //OE2.printLN();
-                OrthExtDistance tempOED = new OrthExtDistance(OE1, OE2, restricted);
+                OrthExtDistance tempOED = new OrthExtDistance(OE1, OE2, restricted, Tol1, Tol2);
                 //System.out.println("************");
                 //System.out.println("");
                 //if (tempOED.getWarning() != null){
@@ -175,56 +175,56 @@ public class ExtensionSpaceDistance{
         return outputs;
     }*/
     
-    private void processParallelyWithExecutorService(List<orthantExtPair> Input, int numT){// throws InterruptedException {
-    //ExecutorService executorService = Executors.newFixedThreadPool(numThreads);
-    //List<CompletableFuture<Void>> futures = new ArrayList<>();
-    
-    final ExecutorService executor = Executors.newFixedThreadPool(numT);
-    List<Future<OrthExtDistance>> futures = new ArrayList<>();
-    
-    for (int i = 0; i < Input.size(); i++) {
-        final orthantExtPair inpT = Input.get(i);
-        try{
-            Future<OrthExtDistance> future = executor.submit(new callableOED(inpT));
-            futures.add(future);
-        } catch (Exception e){
-            System.out.println("This happened " + i);
-            System.out.println(e.getCause());
-        }
-        
-            
-            /*CompletableFuture.runAsync(() -> {
-            //try {
-                DistancesTemp[i] = new OrthExtDistance(inpT, false);
-            /*} catch (InterruptedException e) {
-                e.printStackTrace();
+    private void processParallelyWithExecutorService(List<orthantExtPair> Input, int numT, double Tol1, double Tol2){// throws InterruptedException {
+        //ExecutorService executorService = Executors.newFixedThreadPool(numThreads);
+        //List<CompletableFuture<Void>> futures = new ArrayList<>();
+
+        final ExecutorService executor = Executors.newFixedThreadPool(numT);
+        List<Future<OrthExtDistance>> futures = new ArrayList<>();
+
+        for (int i = 0; i < Input.size(); i++) {
+            final orthantExtPair inpT = Input.get(i);
+            try{
+                Future<OrthExtDistance> future = executor.submit(new callableOED(inpT, Tol1, Tol2));
+                futures.add(future);
+            } catch (Exception e){
+                System.out.println("This happened " + i);
+                System.out.println(e.getCause());
             }
-        }, executorService);*/
-    
-    }
-    //System.out.println("The length of futures is: " + futures.size());
-    int tempCount = 0;
-    for (Future<OrthExtDistance> future : futures) {
-        tempCount++;
-        try{
-            orderedOrthExtDistances.add(future.get());   
-        } catch (Exception e){
-            System.out.println("Catched " + tempCount);
-            System.out.println(e);
+
+
+                /*CompletableFuture.runAsync(() -> {
+                //try {
+                    DistancesTemp[i] = new OrthExtDistance(inpT, false);
+                /*} catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }, executorService);*/
+
         }
-    }
-    /*try {
+        //System.out.println("The length of futures is: " + futures.size());
+        int tempCount = 0;
         for (Future<OrthExtDistance> future : futures) {
-            orderedOrthExtDistances.add(future.get()); // do anything you need, e.g. isDone(), ...
+            tempCount++;
+            try{
+                orderedOrthExtDistances.add(future.get());   
+            } catch (Exception e){
+                System.out.println("Catched " + tempCount);
+                System.out.println(e);
+            }
         }
-    } catch (Exception e) {
-        System.out.println("And this");
-        System.out.println(e);
-    }*/
-    executor.shutdown();
-}
+        /*try {
+            for (Future<OrthExtDistance> future : futures) {
+                orderedOrthExtDistances.add(future.get()); // do anything you need, e.g. isDone(), ...
+            }
+        } catch (Exception e) {
+            System.out.println("And this");
+            System.out.println(e);
+        }*/
+        executor.shutdown();
+    }
     
-    public ExtensionSpaceDistance(ExtensionSpace ES1, ExtensionSpace ES2, boolean restricted, int numThreads){
+    public ExtensionSpaceDistance(ExtensionSpace ES1, ExtensionSpace ES2, boolean restricted, int numThreads, double Tol1, double Tol2){
         orderedOrthExtDistances = new ArrayList<OrthExtDistance>();
         
         Vector<OrthExt> OEs1 = ES1.getOrthExts();
@@ -244,7 +244,7 @@ public class ExtensionSpaceDistance{
         //DistancesTemp = new OrthExtDistance[OEpairs.size()];
         
         //System.out.println("About to run it in 'Parallel'");
-        processParallelyWithExecutorService(OEpairs, numThreads);
+        processParallelyWithExecutorService(OEpairs, numThreads, Tol1, Tol2);
         //orderedOrthExtDistances = OEs1.parallelStream().flatMap(OE1 -> OEs2.parallelStream().map(OE2 -> new OrthExtDistance(OE1, OE2, restricted))).collect(Collectors.toList());
         
         //orderedOrthExtDistances = OEpairs.parallelStream().map(OEpair -> new OrthExtDistance(OEpair, false)).collect(Collectors.toList());

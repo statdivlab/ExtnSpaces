@@ -48,8 +48,10 @@ public class OrthExtDistance{
     }*/
     
     //Constructor
-    private void Constructor1(OrthExt OE1, OrthExt OE2){
-        double TolLimit = 0.00000001; 
+    private void Constructor1(OrthExt OE1, OrthExt OE2, double Tol1, double Tol2){
+        //double TolLimit = 0.00000001; 
+        double TolLimit = Tol1;
+        double TolLimit2 = Tol2;
         PhyloNicePrinter treePrinter = new PhyloNicePrinter();
         //We start by the starting trees in each orthant extension.
         PhyloTree T1 = new PhyloTree(OE1.getStartTree());
@@ -230,7 +232,7 @@ public class OrthExtDistance{
         
             
             if (iterCount == 2000){
-                this.Message = "Warning: Number of iterations reached first threshold (2000) and the tolerance for the gradient was increased to 0.001";
+                this.Message = "Warning: Number of iterations reached first threshold (2000) and the tolerance for the gradient was changed to 0.001";
                 TolLimit = 0.001;
             }
             
@@ -628,7 +630,7 @@ public class OrthExtDistance{
                 //System.out.println("tau max: "+ tau_max);
                 //System.out.println("tau min: "+ tau_min);
                 //System.out.println("tau value before while: "+ tau);
-                while(((derivTau < -0.0000000000000001) || (derivTau > 0.0000000000000001)) && (((tau_max - tau_min) > 0.0000000001))){ //&&(counterWhile < 50)
+                while(((derivTau < -TolLimit2) || (derivTau > TolLimit2)) && (((tau_max - tau_min) > 0.0000000001))){ //&&(counterWhile < 50)
                     counterWhile++;
                     //System.out.println("   Inside the tau while loop "+counterWhile);
                     tau = (tau_max + tau_min)/2;
@@ -766,16 +768,16 @@ public class OrthExtDistance{
     }// end of Constructor1
     
     
-    public OrthExtDistance(OrthExt OE1, OrthExt OE2){
+    public OrthExtDistance(OrthExt OE1, OrthExt OE2, double Tol1, double Tol2){
         O1ID = OE1.getOID();
         O2ID = OE2.getOID();
-        Constructor1(OE1, OE2);
+        Constructor1(OE1, OE2, Tol1, Tol2);
     }
     
-    public OrthExtDistance(orthantExtPair orthEP){
+    public OrthExtDistance(orthantExtPair orthEP, double Tol1, double Tol2){
         O1ID = orthEP.getOrthE1().getOID();
         O2ID = orthEP.getOrthE2().getOID();
-        Constructor1(orthEP.getOrthE1(), orthEP.getOrthE2());
+        Constructor1(orthEP.getOrthE1(), orthEP.getOrthE2(), Tol1, Tol2);
     }
     
     //The following function was used in Constructor2, but now it has been added directly inside the Constructor2 
@@ -866,10 +868,12 @@ public class OrthExtDistance{
     }*/
     
     //Constructor 2
-    private void Constructor2(OrthExt OE1, OrthExt OE2){  
+    private void Constructor2(OrthExt OE1, OrthExt OE2, double Tol1, double Tol2){  
         //Scanner scan = new Scanner(System.in);
         //String pause = scan.next();
-        double TolLimit = 0.00000001;
+        //double TolLimit = 0.00000001;
+        double TolLimit = Tol1;
+        double TolLimit2 = Tol2;
         PhyloNicePrinter treePrinter = new PhyloNicePrinter();
         //We start by the starting trees in each orthant extension.
         
@@ -1257,7 +1261,7 @@ public class OrthExtDistance{
             //dDirectionxs2 = new double[S2.size()];
             
             if (iterCount == 2000){
-                this.Message = "Warning: Number of iterations reached first threshold (2000) and the tolerance for the gradient was increased to 0.001";
+                this.Message = "Warning: Number of iterations reached first threshold (2000) and the tolerance for the gradient was changed to 0.001";
                 TolLimit = 0.001;
             }
             
@@ -1939,7 +1943,7 @@ public class OrthExtDistance{
                     tau = tau_max/2;
                 }
                 //System.out.println("    Prev tau = " + tau);
-                while(((derivTau < -0.0000000000000001) || (derivTau > 0.0000000000000001)) && (((tau_max - tau_min) > 0.0000000001))){ //&&(counterWhile < 50)
+                while(((derivTau < -TolLimit2) || (derivTau > TolLimit2)) && (((tau_max - tau_min) > 0.0000000001))){ //&&(counterWhile < 50)
                     counterWhile++;
                     //System.out.println("   INSIDE the tau while loop " + counterWhile);
                     tau = (tau_max + tau_min)/2;
@@ -2210,23 +2214,23 @@ public class OrthExtDistance{
         
     }// end of Constructor 2
     
-    public OrthExtDistance(OrthExt OE1, OrthExt OE2, boolean restricted){
+    public OrthExtDistance(OrthExt OE1, OrthExt OE2, boolean restricted, double Tol1, double Tol2){
         O1ID = OE1.getOID();
         O2ID = OE2.getOID();
         if (restricted){
-            Constructor1(OE1, OE2);
+            Constructor1(OE1, OE2, Tol1, Tol2);
         } else {
-            Constructor2(OE1, OE2);
+            Constructor2(OE1, OE2, Tol1, Tol2);
         }
     }
     
-    public OrthExtDistance(orthantExtPair orthEP, boolean restricted){
+    public OrthExtDistance(orthantExtPair orthEP, boolean restricted, double Tol1, double Tol2){
         O1ID = orthEP.getOrthE1().getOID();
         O2ID = orthEP.getOrthE2().getOID();
         if (restricted){
-            Constructor1(orthEP.getOrthE1(), orthEP.getOrthE2());
+            Constructor1(orthEP.getOrthE1(), orthEP.getOrthE2(), Tol1, Tol2);
         } else {
-            Constructor2(orthEP.getOrthE1(), orthEP.getOrthE2());
+            Constructor2(orthEP.getOrthE1(), orthEP.getOrthE2(), Tol1, Tol2);
         }
     }
     

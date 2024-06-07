@@ -43,7 +43,7 @@ public class AlgorithmExecutor{
         return escapedData;
     }
     
-    public static void ExtensionDistance(PhyloTree FirstTree, PhyloTree SecondTree, String fileName, int Tnum, boolean TableProd, int nLinesTable){
+    public static void ExtensionDistance(PhyloTree FirstTree, PhyloTree SecondTree, String fileName, int Tnum, boolean TableProd, int nLinesTable, double Tole1, double Tole2){
         
         PhyloNicePrinter nicePrint = new PhyloNicePrinter();
         
@@ -79,11 +79,11 @@ public class AlgorithmExecutor{
         
         if ((Tnum == 0) || (Tnum == 1)){
             Start = System.currentTimeMillis();
-            ESdistance = new ExtensionSpaceDistance(firstES, secondES, false);//, 6);
+            ESdistance = new ExtensionSpaceDistance(firstES, secondES, false, Tole1, Tole2);//, 6);
             End = System.currentTimeMillis();
         } else {
             Start = System.currentTimeMillis();
-            ESdistance = new ExtensionSpaceDistance(firstES, secondES, false, Tnum);
+            ESdistance = new ExtensionSpaceDistance(firstES, secondES, false, Tnum, Tole1, Tole2);
             End = System.currentTimeMillis();
         }
         
@@ -210,6 +210,8 @@ public class AlgorithmExecutor{
                 String dirName = "ExtDistResults";
                 String OutputDocName = "ExtensionDistance";
                 int CountTreePairs = 0;
+                double Tole1 = 0.00000001;
+                double Tole2 = 0.0000000000000001;
                 
                 boolean ProduceTable = false;
                 int NumberLinesTable = 0;
@@ -231,6 +233,24 @@ public class AlgorithmExecutor{
                                 nThreads = Integer.parseInt(args[j+1]);
                             } else {
                                 System.out.println("Warning: Invalid number of Threads. Fixed at 1 instead.");
+                            }
+                        }
+                    }
+                    if ("-Tol1".equals(args[j])){
+                        if (args.length > j+1){
+                            try{
+                                Tole1 = Double.parseDouble(args[j+1]);
+                            } catch (NumberFormatException e) {
+                                System.out.println("Warning: Invalid number for Tol1. Fixed at 1E-8.");
+                            }
+                        }
+                    }
+                    if ("-Tol2".equals(args[j])){
+                        if (args.length > j+1){
+                            try{
+                                Tole2 = Double.parseDouble(args[j+1]);
+                            } catch (NumberFormatException e) {
+                                System.out.println("Warning: Invalid number for Tol2. Fixed at 1E-16.");
                             }
                         }
                     }
@@ -273,7 +293,7 @@ public class AlgorithmExecutor{
                             String Tree2String = myReader.nextLine();
                             PhyloTree FirstTree = new PhyloTree(Tree1String, false);
                             PhyloTree SecondTree = new PhyloTree(Tree2String, false);
-                            ExtensionDistance(FirstTree, SecondTree, dirName+"/"+OutputDocName+ "_" +PairName, nThreads, ProduceTable, NumberLinesTable);
+                            ExtensionDistance(FirstTree, SecondTree, dirName+"/"+OutputDocName+ "_" +PairName, nThreads, ProduceTable, NumberLinesTable, Tole1, Tole2);
                             if (myReader.hasNextLine()){
                                 String EmptyLine = myReader.nextLine();
                             }
