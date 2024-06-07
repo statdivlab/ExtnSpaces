@@ -4,9 +4,9 @@ BHVExtMinDistance is a Java package for the construction of Extension Spaces in 
 
 The main executor ExtDistExecutor.jar performs our algorithm, based on reduced gradient methods, to find the minimum-length path between two extension spaces. The details of the algorithm can be found in... (future paper). It takes as input a text file with a list of Trees in Newick Format and for each pair (two trees listed one after the other) it: 
 
-    -Finds the union of the leaf sets and builds the extension spaces for each tree in the BHV-space for the complete leaf set. 
-    -Performs the optimization method to find the shortest path in between the extension spaces.
-    -Prints out a report and (if asked for it) a table detailing  results obtained by the algorithm.
+- Finds the union of the leaf sets and builds the extension spaces for each tree in the BHV-space for the complete leaf set. 
+- Performs the optimization method to find the shortest path in between the extension spaces.
+- Prints out a report and (if asked for it) a table detailing  results obtained by the algorithm.
     
 ## Installation 
 
@@ -26,6 +26,6 @@ java -jar ExtDistExecutor.jar <InputFileName.txt> [options]
 
 Options are: 
 
-    -d: Allows you to pick the name of the new folder results are going into. Default is ExtDistResults
-    -o: Allows you to pick the name of the output documents (previous to the specific name for each tree pair). Default is ExtensionDistance. 
+- -d: Allows you to pick the name of the new folder results are going into. Default is ExtDistResults
+- -o: Allows you to pick the name of the output documents (previous to the specific name for each tree pair). Default is ExtensionDistance. 
 
