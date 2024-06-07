@@ -1,0 +1,31 @@
+The first original tree is: 
+  Leaves: [{A1} 1, {A2} 3, {A3} 5, {A4} 1, {A5} 1, {A6} 2];
+  Edges: [{A2,A3|A1,A4,A5,A6} 1, {A4,A5|A1,A2,A3,A6} 2, {A2,A3,A4,A5|A1,A6} 2];
+The second original tree is: 
+  Leaves: [{A1} 1, {A2} 1, {A3} 1, {A4} 1];
+  Edges: [{A1,A3|A2,A4} 5];
+The complete leaf set is: [A1, A2, A3, A4, A5, A6]
+ 
+
+ The Running Time is 7 mili-seconds, which is: 0:00:00:00:007 
+The number of orthant pairs is 35
+The mean number of iterations is 2.5428571428571427
+The distance found is 7.302967433402214
+A total of 1 tree pairs achieved this distance. 
+ This are: 
+ 
+
+ ---------- 
+For orthant pair (0, 17) the trees are 
+
+ T'_1:  Leaves: [{A1} 1, {A2} 3, {A3} 5, {A4} 1, {A5} 1, {A6} 2];
+  Edges: [{A2,A3|A1,A4,A5,A6} 1, {A4,A5|A1,A2,A3,A6} 2, {A2,A3,A4,A5|A1,A6} 2];
+
+ T'_2:  Leaves: [{A1} 1, {A2} 1, {A3} 1, {A4} 1, {A5} 1, {A6} 2];
+  Edges: [{A1,A3|A2,A4,A5,A6} 1.3333333333, {A2,A4,A5|A1,A3,A6} 2.3333333333, {A2,A4|A1,A3,A5,A6} 1.3333333334];
+ 
+
+ ---------- 
+
+ 
+ WARNINGS PRODUCED BY CODE: 

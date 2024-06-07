@@ -22,10 +22,30 @@ To run ExtDistExecutor.jar from the command line (at the folder containing the e
 
 ```sh
 java -jar ExtDistExecutor.jar <InputFileName.txt> [options]
-
+```
 
 Options are: 
 
 - -d: Allows you to pick the name of the new folder results are going into. Default is ExtDistResults
 - -o: Allows you to pick the name of the output documents (previous to the specific name for each tree pair). Default is ExtensionDistance. 
+- -k: Number of Threads to use in case of multi-threading. It performs sequentially if not specified. 
+- -T: Indicator. If present, it not only prints a Report on a text file, but also creates a csv table with information in each orthant pair in our algorithm. 
+- -l: When -T is present, but csv should not contain all information of the whole set of orthant pairs, indicate with this option how many rows (number of orthant pairs) should the table contain maximum. 
+- -Tol1: Use to change the tolerance threshold for the gradient to be considered equal to zero. Default is 1E-8.
+- -Tol2: Use to change the tolerance threshold for the partial derivative of line search to be considered equal to zero. Default is 1E-16. 
 
+## Example
+
+To obtain the results shown in Example1 the default code can be runned: 
+
+```sh
+java -jar ExtDistExecutor.jar InputList.txt
+```
+
+To obtain the results in Example2, we run the command,
+
+```sh
+java -jar ExtDistExecutor.jar InputList2.txt -d MyDirectoryName -o Distances -T -l 15 -Tol1 0.00001
+```
+
+in which we indicate results should be stored in the folder "MyDirectoryName", each reports name should start with the name "Distances", we indicate we want the algorithm to print a table with a total of 15 lines and the tolerance threshold is changed to 0.00001. 

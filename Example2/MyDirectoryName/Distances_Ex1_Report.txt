@@ -1,0 +1,111 @@
+The first original tree is: 
+  Leaves: [{A1} 1, {A2} 2, {A3} 2, {A4} 3, {A5} 3, {A6} 2];
+  Edges: [{A1,A2,A3,A5|A4,A6} 1, {A1,A2,A5|A3,A4,A6} 4, {A1,A5|A2,A3,A4,A6} 2];
+The second original tree is: 
+  Leaves: [{A1} 2, {A2} 1, {A6} 3, {A7} 2];
+  Edges: [{A2,A6|A1,A7} 4];
+The complete leaf set is: [A1, A2, A3, A4, A5, A6, A7]
+ 
+
+ The Running Time is 6166 mili-seconds, which is: 0:00:00:06:166 
+The number of orthant pairs is 2835
+The mean number of iterations is 4.566137566137569
+The distance found is 3.082207001484488
+A total of 9 tree pairs achieved this distance. 
+ This are: 
+ 
+
+ ---------- 
+For orthant pair (5, 5) the trees are 
+
+ T'_1:  Leaves: [{A1} 1, {A2} 2, {A3} 2, {A4} 3, {A5} 3, {A6} 2, {A7} 2];
+  Edges: [{A4,A6|A1,A2,A3,A5,A7} 1, {A3,A4,A6|A1,A2,A5,A7} 4, {A1,A5|A2,A3,A4,A6,A7} 0, {A2,A3,A4,A6|A1,A5,A7} 2];
+
+ T'_2:  Leaves: [{A1} 2, {A2} 1, {A3} 2, {A4} 3, {A5} 3, {A6} 0.5, {A7} 2];
+  Edges: [{A2,A3,A4,A6|A1,A5,A7} 3, {A2,A3,A4,A5,A6|A1,A7} 1, {A4,A6|A1,A2,A3,A5,A7} 0, {A3,A4,A6|A1,A2,A5,A7} 2.5];
+ 
+
+ ---------- 
+For orthant pair (5, 6) the trees are 
+
+ T'_1:  Leaves: [{A1} 1, {A2} 2, {A3} 2, {A4} 3, {A5} 3, {A6} 2, {A7} 2];
+  Edges: [{A4,A6|A1,A2,A3,A5,A7} 1, {A3,A4,A6|A1,A2,A5,A7} 4, {A1,A5|A2,A3,A4,A6,A7} 0, {A2,A3,A4,A6|A1,A5,A7} 2];
+
+ T'_2:  Leaves: [{A1} 2, {A2} 1, {A3} 2, {A4} 3, {A5} 3, {A6} 0.5, {A7} 2];
+  Edges: [{A2,A3,A4,A6|A1,A5,A7} 3, {A2,A3,A4,A5,A6|A1,A7} 1, {A3,A4,A6|A1,A2,A5,A7} 2.5];
+ 
+
+ ---------- 
+For orthant pair (5, 106) the trees are 
+
+ T'_1:  Leaves: [{A1} 1, {A2} 2, {A3} 2, {A4} 3, {A5} 3, {A6} 2, {A7} 2];
+  Edges: [{A4,A6|A1,A2,A3,A5,A7} 1, {A3,A4,A6|A1,A2,A5,A7} 4, {A1,A5|A2,A3,A4,A6,A7} 0, {A2,A3,A4,A6|A1,A5,A7} 2];
+
+ T'_2:  Leaves: [{A1} 2, {A2} 1, {A3} 2, {A4} 3, {A5} 3, {A6} 0.5, {A7} 2];
+  Edges: [{A2,A3,A4,A6|A1,A5,A7} 3, {A2,A3,A4,A5,A6|A1,A7} 1, {A3,A6|A1,A2,A4,A5,A7} 0, {A3,A4,A6|A1,A2,A5,A7} 2.5];
+ 
+
+ ---------- 
+For orthant pair (7, 5) the trees are 
+
+ T'_1:  Leaves: [{A1} 1, {A2} 2, {A3} 2, {A4} 3, {A5} 3, {A6} 2, {A7} 2];
+  Edges: [{A4,A6|A1,A2,A3,A5,A7} 1, {A3,A4,A6|A1,A2,A5,A7} 4, {A2,A3,A4,A6|A1,A5,A7} 2, {A2,A3,A4,A5,A6|A1,A7} 0];
+
+ T'_2:  Leaves: [{A1} 2, {A2} 1, {A3} 2, {A4} 3, {A5} 3, {A6} 0.5, {A7} 2];
+  Edges: [{A2,A3,A4,A6|A1,A5,A7} 3, {A2,A3,A4,A5,A6|A1,A7} 1, {A4,A6|A1,A2,A3,A5,A7} 0, {A3,A4,A6|A1,A2,A5,A7} 2.5];
+ 
+
+ ---------- 
+For orthant pair (7, 6) the trees are 
+
+ T'_1:  Leaves: [{A1} 0.9999999999, {A2} 2, {A3} 2, {A4} 3, {A5} 3, {A6} 2, {A7} 2];
+  Edges: [{A4,A6|A1,A2,A3,A5,A7} 1, {A3,A4,A6|A1,A2,A5,A7} 4, {A2,A3,A4,A6|A1,A5,A7} 2, {A2,A3,A4,A5,A6|A1,A7} 0.0000000001];
+
+ T'_2:  Leaves: [{A1} 2, {A2} 1, {A3} 2, {A4} 3, {A5} 3, {A6} 0.5, {A7} 2];
+  Edges: [{A2,A3,A4,A6|A1,A5,A7} 3, {A2,A3,A4,A5,A6|A1,A7} 1, {A3,A4,A6|A1,A2,A5,A7} 2.5];
+ 
+
+ ---------- 
+For orthant pair (7, 106) the trees are 
+
+ T'_1:  Leaves: [{A1} 1, {A2} 2, {A3} 2, {A4} 3, {A5} 3, {A6} 2, {A7} 2];
+  Edges: [{A4,A6|A1,A2,A3,A5,A7} 1, {A3,A4,A6|A1,A2,A5,A7} 4, {A2,A3,A4,A6|A1,A5,A7} 2, {A2,A3,A4,A5,A6|A1,A7} 0];
+
+ T'_2:  Leaves: [{A1} 2, {A2} 1, {A3} 2, {A4} 3, {A5} 3, {A6} 0.5, {A7} 2];
+  Edges: [{A2,A3,A4,A6|A1,A5,A7} 3, {A2,A3,A4,A5,A6|A1,A7} 1, {A3,A6|A1,A2,A4,A5,A7} 0, {A3,A4,A6|A1,A2,A5,A7} 2.5];
+ 
+
+ ---------- 
+For orthant pair (8, 5) the trees are 
+
+ T'_1:  Leaves: [{A1} 1, {A2} 2, {A3} 2, {A4} 3, {A5} 3, {A6} 2, {A7} 2];
+  Edges: [{A4,A6|A1,A2,A3,A5,A7} 1, {A3,A4,A6|A1,A2,A5,A7} 4, {A2,A3,A4,A6|A1,A5,A7} 2, {A1,A2,A3,A4,A6|A5,A7} 0];
+
+ T'_2:  Leaves: [{A1} 2, {A2} 1, {A3} 2, {A4} 3, {A5} 3, {A6} 0.5, {A7} 2];
+  Edges: [{A2,A3,A4,A6|A1,A5,A7} 3, {A2,A3,A4,A5,A6|A1,A7} 1, {A4,A6|A1,A2,A3,A5,A7} 0, {A3,A4,A6|A1,A2,A5,A7} 2.5];
+ 
+
+ ---------- 
+For orthant pair (8, 6) the trees are 
+
+ T'_1:  Leaves: [{A1} 1, {A2} 2, {A3} 2, {A4} 3, {A5} 3, {A6} 2, {A7} 2];
+  Edges: [{A4,A6|A1,A2,A3,A5,A7} 1, {A3,A4,A6|A1,A2,A5,A7} 4, {A2,A3,A4,A6|A1,A5,A7} 2, {A1,A2,A3,A4,A6|A5,A7} 0];
+
+ T'_2:  Leaves: [{A1} 2, {A2} 1, {A3} 2, {A4} 3, {A5} 3, {A6} 0.5, {A7} 2];
+  Edges: [{A2,A3,A4,A6|A1,A5,A7} 3, {A2,A3,A4,A5,A6|A1,A7} 1, {A3,A4,A6|A1,A2,A5,A7} 2.5];
+ 
+
+ ---------- 
+For orthant pair (8, 106) the trees are 
+
+ T'_1:  Leaves: [{A1} 1, {A2} 2, {A3} 2, {A4} 3, {A5} 3, {A6} 2, {A7} 2];
+  Edges: [{A4,A6|A1,A2,A3,A5,A7} 1, {A3,A4,A6|A1,A2,A5,A7} 4, {A2,A3,A4,A6|A1,A5,A7} 2, {A1,A2,A3,A4,A6|A5,A7} 0];
+
+ T'_2:  Leaves: [{A1} 2, {A2} 1, {A3} 2, {A4} 3, {A5} 3, {A6} 0.5, {A7} 2];
+  Edges: [{A2,A3,A4,A6|A1,A5,A7} 3, {A2,A3,A4,A5,A6|A1,A7} 1, {A3,A6|A1,A2,A4,A5,A7} 0, {A3,A4,A6|A1,A2,A5,A7} 2.5];
+ 
+
+ ---------- 
+
+ 
+ WARNINGS PRODUCED BY CODE: 
