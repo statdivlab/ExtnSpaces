@@ -107,7 +107,7 @@ public class AlgorithmExecutor{
                 } else {
                     nLT = Math.min(nLinesTable, OrthPairsNum);
                 }
-                while(ESdistance.getDistance() == ESdistance.getOOED().get(NumberOptimals).getDistance()){
+                while((NumberOptimals < OrthPairsNum) && (ESdistance.getDistance() == ESdistance.getOOED().get(NumberOptimals).getDistance())){
                     NumberOptimals++;
                 }
                 String ListWarnings = "";
@@ -155,7 +155,7 @@ public class AlgorithmExecutor{
                 int OrthPairsNum = ESdistance.getOOED().size();
                 double MeanIts = 0;
                 int NumberOptimals = 1;
-                while(ESdistance.getDistance() == ESdistance.getOOED().get(NumberOptimals).getDistance()){
+                while((NumberOptimals < OrthPairsNum) && (ESdistance.getDistance() == ESdistance.getOOED().get(NumberOptimals).getDistance())){
                     NumberOptimals++;
                 }
                 String ListWarnings = "";
