@@ -43,6 +43,97 @@ public class AlgorithmExecutor{
         return escapedData;
     }
     
+    private static int nextIndex(String t, int i, String s) {
+		int minIndex = t.length();
+		int tempIndex = -1;
+		
+		for (int j = 0; j < s.length(); j++) {
+			tempIndex = t.substring(i+1).indexOf(s.charAt(j));
+			if ((tempIndex != -1)  && (tempIndex + i + 1 < minIndex)) {
+				minIndex = tempIndex + i +1;
+			}
+		}
+		return minIndex;
+	}
+    
+     public static boolean unrootedTree(String tNewick){
+         String t = tNewick;
+			
+         //pull off ';' if at end
+         if (t.charAt(t.length()-1) == ';') {
+             t = t.substring(0, t.length() -1);
+         }
+		
+         // pull off the first and last brackets (and a root length, between the last bracket and ;, if there is one.
+         t = t.substring(t.indexOf('(') + 1);
+         t = t.substring(0, t.lastIndexOf(')') );
+         
+         int i = 0;
+         int OuterGroups = 0;
+         boolean ActiveGroup = false;
+         int innerParent = 0;
+         
+         Stack<Integer> stackBifurcations = new Stack<Integer>();
+         int numBifurcations = 0;
+         
+         while (i < t.length() && i > -1){
+             switch(t.charAt(i)) {
+                 case '(':
+                     if(!ActiveGroup){
+                         ActiveGroup = true;
+                     } else {
+                         innerParent++;
+                     }
+                     stackBifurcations.push(0);
+                     i++;
+                     break;
+                     
+                 case ')':
+                     if (ActiveGroup){
+                         if (innerParent > 0){
+                             innerParent--;
+                         } else {
+                             ActiveGroup = false;
+                             OuterGroups++;
+                         }
+                     } else {
+                         System.err.println("Reading error: invalid Newick string in tree " + t );
+                         System.exit(1);
+                     }
+                     numBifurcations = stackBifurcations.pop();
+                     if (numBifurcations == 0){
+                         System.err.println("Reading error: node of degree two in Newick format for tree " + t );
+                         System.exit(1);
+                     }
+                     i = nextIndex(t, i, ",)"); 
+                     break;
+                     
+                 case ',': 
+                     if(ActiveGroup){
+                         numBifurcations = stackBifurcations.pop();
+                         numBifurcations++;
+                         stackBifurcations.push(numBifurcations);   
+                     }
+                     i++;
+                     break;
+                
+                 default:
+                     if (!ActiveGroup) {
+                         OuterGroups++;
+                     }
+                     i = nextIndex(t, i, ",)");
+                     break;
+                     
+             }
+         }
+         
+         if (OuterGroups <= 2){
+             return(false);
+         } else {
+             return(true);
+         } 
+	}
+    
     public static void ExtensionDistance(PhyloTree FirstTree, PhyloTree SecondTree, String fileName, int Tnum, boolean TableProd, int nLinesTable, double Tole1, double Tole2){
         
         PhyloNicePrinter nicePrint = new PhyloNicePrinter();
@@ -277,10 +368,14 @@ public class AlgorithmExecutor{
                 
                 while (myReader.hasNextLine()) {
                     CountTreePairs++;
+                    boolean TreesAreOk = true;
                     String PairName = "Pair"+CountTreePairs;
                     String Tree1String = myReader.nextLine();
                     if (myReader.hasNextLine()){
                         try{
+                            if(!unrootedTree(Tree1String)){
+                                TreesAreOk = false;
+                            }
                             PhyloTree FirstTree = new PhyloTree(Tree1String, false);
                             
                         } catch(Exception e){
@@ -292,11 +387,20 @@ public class AlgorithmExecutor{
                         if (myReader.hasNextLine()){
                             String Tree2String = myReader.nextLine();
                             PhyloTree FirstTree = new PhyloTree(Tree1String, false);
-                            PhyloTree SecondTree = new PhyloTree(Tree2String, false);
-                            ExtensionDistance(FirstTree, SecondTree, dirName+"/"+OutputDocName+ "_" +PairName, nThreads, ProduceTable, NumberLinesTable, Tole1, Tole2);
-                            if (myReader.hasNextLine()){
-                                String EmptyLine = myReader.nextLine();
+                            if(!unrootedTree(Tree2String)){
+                                TreesAreOk = false;
                             }
+                            PhyloTree SecondTree = new PhyloTree(Tree2String, false);
+                            if (!TreesAreOk){
+                                System.out.println("Warning: The Newick format in the tree pair number " + CountTreePairs + " is not appropriate for unrooted trees (it might be describing a rooted tree instead). This pair will be skiped by the code.");
+                                
+                            } else {
+                                ExtensionDistance(FirstTree, SecondTree, dirName+"/"+OutputDocName+ "_" +PairName, nThreads, ProduceTable, NumberLinesTable, Tole1, Tole2);
+                                if (myReader.hasNextLine()){
+                                    String EmptyLine = myReader.nextLine();
+                                }
+                            }
+                            
                         } else {
                             System.out.println("Warning: The last tree does not have a second tree for comparison. It was ignored.");
                         }
